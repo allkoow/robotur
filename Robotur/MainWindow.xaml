@@ -4,9 +4,414 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Robotur"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="Robotur Interface" Height="350" Width="525">
-    <Grid>
-        
+        Title="Robotur Interface" Height="730" Width="1280"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+
+    <Window.Resources>
+        <local:SelectedIndexBoolConverter x:Key="selectedIndexBoolConverter" />
+        <local:EnumBoolConverter x:Key="enumBoolConverter" />
+        <local:StringBuilderToStringConverter x:Key="stringBuilderToStringConverter" />
+                
+        <Style TargetType="GroupBox" x:Key="styleGB1">
+            <Setter Property="Padding" Value="5 2 2 0" />
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontWeight="Bold"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="GroupBox" x:Key="styleGB2" BasedOn="{StaticResource styleGB1}">
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="14" FontWeight="Bold"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Label" x:Key="styleLabel1">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="styleTxtBlock1">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Height" Value="25" />
+
+            <Setter Property="Text" Value="-" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=btnConnect, Path=IsChecked}" Value="True">
+                    <Setter Property="Text" Value="{Binding}" />
+                </DataTrigger>
+            </Style.Triggers>
+
+        </Style>
+
+        <Style TargetType="ComboBox" x:Key="styleCB1">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+
+        <Style TargetType="ToggleButton" x:Key="styleBTN1">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+
+        <Style TargetType="Button" x:Key="styleBTN2">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+
+        <Style TargetType="Slider" x:Key="styleSlider1">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+
+        <Style TargetType="Slider" x:Key="styleSliderVoltage">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="20" />
+            
+            <Setter Property="IsEnabled" Value="False" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=rbtnVoltage, Path=IsChecked}" Value="True">
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Slider" x:Key="styleSliderVelocityPID">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="20" />
+            
+            <Setter Property="IsEnabled" Value="False" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=rbtnVelocity, Path=IsChecked}" Value="True">
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Slider" x:Key="styleSliderAnglePID">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="20" />
+            
+            <Setter Property="IsEnabled" Value="False" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=rbtnAngle, Path=IsChecked}" Value="True">
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBox" x:Key="styleTextBox1">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+
+        <Style TargetType="TextBox" x:Key="styleTextBoxVoltage">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="20" />
+
+            <Setter Property="IsEnabled" Value="False" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=rbtnVoltage, Path=IsChecked}" Value="True">
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBox" x:Key="styleTextBoxVelocityPID">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="20" />
+
+            <Setter Property="IsEnabled" Value="False" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=rbtnVelocity, Path=IsChecked}" Value="True">
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBox" x:Key="styleTextBoxAnglePID">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Height" Value="20" />
+
+            <Setter Property="IsEnabled" Value="False" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=rbtnAngle, Path=IsChecked}" Value="True">
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Name="mainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <GroupBox Name="groupBoxSettings" Header="Settings" Style="{StaticResource styleGB2}">
+                <StackPanel>
+                    <GroupBox Name="groupBoxSerialPort" Header="Serial Port" Style="{StaticResource styleGB1}">
+                        <StackPanel>
+                            <DockPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <Label Content="Port Number" Style="{StaticResource styleLabel1}" />
+                                    <Label Content="Baud Rate" Style="{StaticResource styleLabel1}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" >
+                                    <ComboBox Name="cmbBoxPortNumber" Style="{StaticResource styleCB1}" ItemsSource="{Binding settings.portNumbers}" />
+                                    <ComboBox Name="cmbBoxBaudRate" Style="{StaticResource styleCB1}" ItemsSource="{Binding settings.baudRates}"/>
+                                </StackPanel>
+                            </DockPanel>
+
+                            <Button Name="btnRefreshPorts" Content="Refresh List of Ports" Command="{Binding refreshPortsCommand}" Style="{StaticResource styleBTN2}"/>
+
+                            <ToggleButton Name="btnConnect" Command="{Binding connectCommand}">
+                                <ToggleButton.Style>
+                                    <Style TargetType="ToggleButton" BasedOn="{StaticResource styleBTN1}">
+                                        <Setter Property="Content" Value="Connect" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Content" Value="Disconnect" />
+                                            </Trigger>
+                                            <DataTrigger Value="False">
+                                                <Setter Property="IsEnabled" Value="False" />
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource selectedIndexBoolConverter}">
+                                                        <Binding ElementName="cmbBoxPortNumber" Path="SelectedIndex" />
+                                                        <Binding ElementName="cmbBoxBaudRate" Path="SelectedIndex" />
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ToggleButton.Style>
+                            </ToggleButton>
+
+                            <TextBox Name="txtBoxMessages" 
+                                     Text="{Binding Path=messages, Converter={StaticResource stringBuilderToStringConverter}}" Height="100" Margin="5" Padding="5"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Name="groupBoxOperatingMode" Header="Operating Mode" Style="{StaticResource styleGB1}">
+                        <StackPanel>
+                            <RadioButton Name="rbtnOff" Margin="5" 
+                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=off}">Off</RadioButton>
+                            <RadioButton Name="rbtnVoltage" Margin="5"
+                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=voltage}">Voltage to motors</RadioButton>
+                            <RadioButton Name="rbtnVelocity" Margin="5"
+                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=velocityController}">Angular Velocity Controller</RadioButton>
+                            <RadioButton Name="rbtnAngle" Margin="5"
+                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=angleController}">Angle controller</RadioButton>
+                            <RadioButton Name="rbtnCascade" Margin="5"
+                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=cascadeController}" IsEnabled="False">Cascade controller</RadioButton>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Name="groupBoxGraphsSettings" Header="Graphs" Style="{StaticResource styleGB1}">
+                        <StackPanel>
+                            <CheckBox Name="checkBoxDatas" Content="Get Datas" Margin="5" IsChecked="{Binding Path=settings.getDatas}"/>
+                            <DockPanel >
+                                <Label Content="No. of samples" Style="{StaticResource styleLabel1}" />
+                                <Slider Grid.Column="1" Name="sliderSamples"
+                                    Minimum="0" Maximum="1000" Ticks="1"
+                                    Value="{Binding Path=settings.numberOfSamples}" HorizontalAlignment="Stretch">
+                                    <Slider.Style>
+                                        <Style TargetType="Slider" BasedOn="{StaticResource styleSlider1}">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=checkBoxDatas, Path=IsChecked}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="True" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Slider.Style>
+                                </Slider>
+                            </DockPanel>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Name="groupBoxBattery" Header="Battery Info" Style="{StaticResource styleGB2}">
+                <DockPanel>
+                    <StackPanel>
+                        <Label Content="Cell First:" Style="{StaticResource styleLabel1}"/>
+                        <Label Content="Cell Second:" Style="{StaticResource styleLabel1}"/>
+                        <Label Content="Battery:" Style="{StaticResource styleLabel1}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Name="txtBlockCell1" Style="{StaticResource styleTxtBlock1}" DataContext="{Binding batteryInfo.cell1}" />
+                        <TextBlock Name="txtBlockCell2" Style="{StaticResource styleTxtBlock1}" DataContext="{Binding batteryInfo.cell2}" />
+                        <TextBlock Name="txtBlockBattery" Style="{StaticResource styleTxtBlock1}" DataContext="{Binding batteryInfo.battery}"/>
+                    </StackPanel>
+                </DockPanel>
+            </GroupBox>
+        </StackPanel>
+        <GroupBox Grid.Column="1" Header="Graphs" Style="{StaticResource styleGB2}" >
+            <StackPanel>
+                <oxy:Plot>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries Name="graphOmega" ItemsSource="{Binding measurements[0]}" />
+                        <oxy:LineSeries Name="graphOmegaRef" ItemsSource="{Binding measurements[1]}" />
+                    </oxy:Plot.Series>
+                </oxy:Plot>
+                <oxy:Plot>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries Name="graphAngle" ItemsSource="{Binding measurements[2]}" />
+                        <oxy:LineSeries Name="graphAngleRef" ItemsSource="{Binding measurements[3]}" />
+                    </oxy:Plot.Series>
+                </oxy:Plot>
+                <oxy:Plot>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries Name="graphVoltage" ItemsSource="{Binding measurements[4]}" />
+                    </oxy:Plot.Series>
+                </oxy:Plot>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="2" Header="Parameters" Style="{StaticResource styleGB2}">
+            <StackPanel>
+                <Button Content="Upload Configuration" Style="{StaticResource styleBTN2}" IsEnabled="{Binding ElementName=btnConnect, Path=IsChecked}"/>
+
+                <GroupBox Style="{StaticResource styleGB1}" Header="Angle Controller">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        
+                        <Label Content="Set Point" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
+                        <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="0" 
+                                Value="{Binding angleController.setPoint}"/>
+                        <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="0"
+                                 Text="{Binding angleController.setPoint, StringFormat=N4}"/>
+
+                        <Label Content="Kp" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="1"/>
+                        <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="1"
+                                Value="{Binding angleController.Kp}"/>
+                        <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="1"
+                                 Text="{Binding angleController.Kp, StringFormat=N4}"/>
+
+                        <Label Content="Ki" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="2"/>
+                        <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="2"
+                                Value="{Binding angleController.Ki}"/>
+                        <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="2"
+                                 Text="{Binding angleController.Ki, StringFormat=N4}"/>
+
+                        <Label Content="Kd" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="3"/>
+                        <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="3"
+                                Value="{Binding angleController.Kd}"/>
+                        <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="3"
+                                 Text="{Binding angleController.Kd, StringFormat=N4}"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Style="{StaticResource styleGB1}" Header="Velocity Controller">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Label Content="Voltage" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
+                        <Slider Style="{StaticResource styleSliderVoltage}" Grid.Column="1" Grid.Row="0" Maximum="7.0"
+                                Value="{Binding speedController.voltage}"/>
+                        <TextBox Style="{StaticResource styleTextBoxVoltage}" Grid.Column="2" Grid.Row="0"
+                                 Text="{Binding speedController.voltage, StringFormat=N4}"/>
+
+                        <Label Content="Set Point" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="1"/>
+                        <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="1" Maximum="7.0"
+                                Value="{Binding speedController.setPoint}"/>
+                        <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="1"
+                                 Text="{Binding speedController.setPoint, StringFormat=N4}"/>
+
+                        <Label Content="Kp" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="2"/>
+                        <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="2" Maximum="7.0"
+                                Value="{Binding speedController.Kp}"/>
+                        <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="2"
+                                 Text="{Binding speedController.Kp, StringFormat=N4}"/>
+
+                        <Label Content="Ki" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="3"/>
+                        <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="3" Maximum="7.0"
+                                Value="{Binding speedController.Ki}"/>
+                        <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="3"
+                                 Text="{Binding speedController.Ki, StringFormat=N4}"/>
+
+                        <Label Content="Kd" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="4"/>
+                        <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="4" Maximum="7.0"
+                                Value="{Binding speedController.Kd}"/>
+                        <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="4"
+                                 Text="{Binding speedController.Kd, StringFormat=N4}"/>
+
+
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Velocity filter (low-pass)" Style="{StaticResource styleGB1}" 
+                          IsEnabled="{Binding ElementName=rbtnVelocity, Path=IsChecked}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Beta" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="0" Maximum="7.0"
+                                Value="{Binding speedController.filterBeta}"/>
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="0"
+                                 Text="{Binding speedController.filterBeta, StringFormat=N4}"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Angle filter (complementary)" Style="{StaticResource styleGB1}" 
+                          IsEnabled="{Binding ElementName=rbtnAngle, Path=IsChecked}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="6*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Beta" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="0" Maximum="7.0"
+                                Value="{Binding angleController.filterBeta}"/>
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="0"
+                                 Text="{Binding angleController.filterBeta, StringFormat=N4}"/>
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>
