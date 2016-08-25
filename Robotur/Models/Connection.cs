@@ -23,13 +23,6 @@ namespace Robotur
             set;
         }
 
-        private Settings settings = new Settings();
-        public Settings Settings
-        {
-            get { return settings; }
-            set { settings = value; }
-        }
-
         #region connection notification
         private bool isOpen;
         public bool IsOpen
@@ -120,6 +113,7 @@ namespace Robotur
             bcgWorker.WorkerSupportsCancellation = true;
 
             BaudRates.Add(9600);
+            BaudRates.Add(230400);
 
         }
 
@@ -223,8 +217,11 @@ namespace Robotur
         {
             try
             {
-                if (serialPort.IsOpen && settings.GetDatas)
+                if (serialPort.IsOpen)
+                {
                     serialDatas = serialPort.ReadLine();
+                }
+                    
             }
             catch
             {

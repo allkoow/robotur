@@ -36,11 +36,13 @@ namespace Robotur
         private double _battery;
         public double battery
         {
-            get { return _battery; }
+            get
+            {
+                return _cell1 + _cell2;
+            }
             set
             {
-                _battery = value;
-                RaisePropertyChanged(nameof(battery));
+                battery = _cell1 + _cell2;
             }
         }
 

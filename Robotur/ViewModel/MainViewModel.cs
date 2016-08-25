@@ -15,13 +15,6 @@ namespace Robotur.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private Settings _settings = new Settings();
-        public Settings settings
-        {
-            get { return _settings; }
-            set { _settings = value; }
-        }
-
         private StringBuilder messages = new StringBuilder();
         public StringBuilder Messages
         {
@@ -33,45 +26,34 @@ namespace Robotur.ViewModel
             }
         }
 
-        private BatteryInfo _batteryInfo = new BatteryInfo();
-        public BatteryInfo batteryInfo
-        {
-            get { return _batteryInfo; }
-            set
-            {
-                _batteryInfo = value;
-                RaisePropertyChanged(nameof(batteryInfo));
-            }
-        }
-
-        private AngleController _angleController = new AngleController();
-        public AngleController angleController
-        {
-            get { return _angleController; }
-            set
-            {
-                _angleController = value;
-                RaisePropertyChanged(nameof(angleController));
-            }
-        }
-
-        private SpeedController _speedController = new SpeedController();
-        public SpeedController speedController
-        {
-            get { return _speedController; }
-            set
-            {
-                _speedController = value;
-                RaisePropertyChanged(nameof(speedController));
-            }
-        }
-
-        private Connection connection;
         public Connection Connection
         {
-            get { return connection; }
-            set { connection = value; }
+            get;
+            set;
         }
+        public Datas Datas
+        {
+            get;
+            set;
+        }
+
+        #region Graphs
+        public Graphs GraphAngle
+        {
+            get;
+            set;
+        }
+        public Graphs GraphVelocity
+        {
+            get;
+            set;
+        }
+        public Graphs GraphVoltage
+        {
+            get;
+            set;
+        }
+        #endregion
 
         private Timer timerMessages;
 
@@ -91,24 +73,30 @@ namespace Robotur.ViewModel
         public MainViewModel()
         {
             // Timer for refreshing graphs initialization
-            timerGraphs = new Timer(1000);
+            timerGraphs = new Timer(100);
             timerGraphs.Elapsed += graphUpdate;
+            timerGraphs.Start();
 
             timerMessages = new Timer(100);
             timerMessages.Elapsed += messagesUpdate;
             timerMessages.Start();
 
-            connection = new Connection(messages);
+            Connection = new Connection(messages);
+            Datas = new Datas();
 
-            CommandConnection = new RelayCommand(connection.Connect);
-            CommandDisconnection = new RelayCommand(connection.Disconnect);
-            CommandRefreshListOfPorts = new RelayCommand(connection.RefreshListOfPorts);
+            GraphAngle = new Graphs();
+            GraphVelocity = new Graphs();
+            GraphVoltage = new Graphs();
+
+            CommandConnection = new RelayCommand(Connection.Connect);
+            CommandDisconnection = new RelayCommand(Connection.Disconnect);
+            CommandRefreshListOfPorts = new RelayCommand(Connection.RefreshListOfPorts);
             CommandSendDatas = new RelayCommand(SendDatas);
         }
 
         private void SendDatas()
         {
-            throw new NotImplementedException();
+            Connection.SendDatas(Datas.DatasToSend);
         }
 
         private void messagesUpdate(object sender, ElapsedEventArgs e)
@@ -118,7 +106,14 @@ namespace Robotur.ViewModel
 
         private void graphUpdate(object sender, ElapsedEventArgs e)
         {
-               
+            
+            if (Datas.Settings.GetDatas)
+            {
+                Datas.DatasConversion(Connection.SerialDatas);
+                GraphAngle.draw(new List<Measurements>() { Datas.Measurements[1], Datas.Measurements[2] });
+                GraphVelocity.draw(new List<Measurements>() { Datas.Measurements[0], Datas.Measurements[6] });
+                GraphVoltage.draw(new List<Measurements>() { Datas.Measurements[3] });
+            }  
         }
     }
 }

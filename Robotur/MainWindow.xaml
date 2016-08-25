@@ -238,27 +238,27 @@
                     <GroupBox Name="groupBoxOperatingMode" Header="Operating Mode" Style="{StaticResource styleGB1}">
                         <StackPanel>
                             <RadioButton Name="rbtnOff" Margin="5" 
-                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=off}">Off</RadioButton>
+                                         IsChecked="{Binding Path=Datas.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=off}">Off</RadioButton>
                             <RadioButton Name="rbtnVoltage" Margin="5"
-                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=voltage}">Voltage to motors</RadioButton>
+                                         IsChecked="{Binding Path=Datas.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=voltage}">Voltage to motors</RadioButton>
                             <RadioButton Name="rbtnVelocity" Margin="5"
-                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=velocityController}">Angular Velocity Controller</RadioButton>
+                                         IsChecked="{Binding Path=Datas.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=velocityController}">Angular Velocity Controller</RadioButton>
                             <RadioButton Name="rbtnAngle" Margin="5"
-                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=angleController}">Angle controller</RadioButton>
+                                         IsChecked="{Binding Path=Datas.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=angleController}">Angle controller</RadioButton>
                             <RadioButton Name="rbtnCascade" Margin="5"
-                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=cascadeController}" IsEnabled="False">Cascade controller</RadioButton>
+                                         IsChecked="{Binding Path=Datas.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=cascadeController}" IsEnabled="False">Cascade controller</RadioButton>
                         </StackPanel>
                     </GroupBox>
 
                     <GroupBox Name="groupBoxGraphsSettings" Header="Graphs" Style="{StaticResource styleGB1}">
                         <StackPanel>
                             <CheckBox Name="checkBoxDatas" Content="Get Datas" Margin="5" 
-                                      IsChecked="{Binding Path=Connection.Settings.GetDatas}"/>
+                                      IsChecked="{Binding Path=Datas.Settings.GetDatas}"/>
                             <DockPanel >
                                 <Label Content="No. of samples" Style="{StaticResource styleLabel1}" />
                                 <Slider Grid.Column="1" Name="sliderSamples"
                                     Minimum="0" Maximum="1000" Ticks="1"
-                                    Value="{Binding Path=Connection.Settings.NumberOfSamples}" HorizontalAlignment="Stretch">
+                                    Value="{Binding Path=Datas.Settings.NumberOfSamples}" HorizontalAlignment="Stretch">
                                     <Slider.Style>
                                         <Style TargetType="Slider" BasedOn="{StaticResource styleSlider1}">
                                             <Setter Property="IsEnabled" Value="False" />
@@ -284,21 +284,36 @@
                         <Label Content="Battery:" Style="{StaticResource styleLabel1}"/>
                     </StackPanel>
                     <StackPanel>
-                        <TextBlock Name="txtBlockCell1" Style="{StaticResource styleTxtBlock1}" DataContext="{Binding batteryInfo.cell1}" />
-                        <TextBlock Name="txtBlockCell2" Style="{StaticResource styleTxtBlock1}" DataContext="{Binding batteryInfo.cell2}" />
-                        <TextBlock Name="txtBlockBattery" Style="{StaticResource styleTxtBlock1}" DataContext="{Binding batteryInfo.battery}"/>
+                        <TextBlock Name="txtBlockCell1" Style="{StaticResource styleTxtBlock1}" DataContext="{Binding Datas.BatteryInfo.cell1}" />
+                        <TextBlock Name="txtBlockCell2" Style="{StaticResource styleTxtBlock1}" DataContext="{Binding Datas.BatteryInfo.cell2}" />
+                        <TextBlock Name="txtBlockBattery" Style="{StaticResource styleTxtBlock1}" DataContext="{Binding Datas.BatteryInfo.battery}"/>
                     </StackPanel>
                 </DockPanel>
             </GroupBox>
         </StackPanel>
         <GroupBox Grid.Column="1" Header="Graphs" Style="{StaticResource styleGB2}" >
             <Grid>
-                <oxy:PlotView Model="{Binding graphs.PlotModel}" />
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <oxy:PlotView Model="{Binding GraphAngle.PlotModel}" />
+                </Grid>
+                <Grid Grid.Row="1">
+                    <oxy:PlotView Model="{Binding GraphVelocity.PlotModel}" />
+                </Grid>
+                <Grid Grid.Row="2">
+                    <oxy:PlotView Model="{Binding GraphVoltage.PlotModel}" />
+                </Grid>
             </Grid>
         </GroupBox>
         <GroupBox Grid.Column="2" Header="Parameters" Style="{StaticResource styleGB2}">
             <StackPanel>
-                <Button Content="Upload Configuration" Style="{StaticResource styleBTN2}" IsEnabled="{Binding ElementName=btnConnect, Path=IsChecked}"/>
+                <Button Content="Upload Configuration" Style="{StaticResource styleBTN2}" 
+                        IsEnabled="{Binding ElementName=btnConnect, Path=IsChecked}"
+                        Command="{Binding CommandSendDatas}"/>
 
                 <GroupBox Style="{StaticResource styleGB1}" Header="Angle Controller">
                     <Grid>
@@ -316,27 +331,27 @@
                         
                         <Label Content="Set Point" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
                         <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="0" 
-                                Value="{Binding angleController.setPoint}"/>
+                                Value="{Binding Datas.AngleController.setPoint}"/>
                         <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="0"
-                                 Text="{Binding angleController.setPoint, StringFormat=N4}"/>
+                                 Text="{Binding Datas.AngleController.setPoint, StringFormat=N4}"/>
 
                         <Label Content="Kp" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="1"/>
                         <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="1"
-                                Value="{Binding angleController.Kp}"/>
+                                Value="{Binding Datas.AngleController.Kp}"/>
                         <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="1"
-                                 Text="{Binding angleController.Kp, StringFormat=N4}"/>
+                                 Text="{Binding Datas.AngleController.Kp, StringFormat=N4}"/>
 
                         <Label Content="Ki" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="2"/>
                         <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="2"
-                                Value="{Binding angleController.Ki}"/>
+                                Value="{Binding Datas.AngleController.Ki}"/>
                         <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="2"
-                                 Text="{Binding angleController.Ki, StringFormat=N4}"/>
+                                 Text="{Binding Datas.AngleController.Ki, StringFormat=N4}"/>
 
                         <Label Content="Kd" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="3"/>
                         <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="3"
-                                Value="{Binding angleController.Kd}"/>
+                                Value="{Binding Datas.AngleController.Kd}"/>
                         <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="3"
-                                 Text="{Binding angleController.Kd, StringFormat=N4}"/>
+                                 Text="{Binding Datas.AngleController.Kd, StringFormat=N4}"/>
                     </Grid>
                 </GroupBox>
 
@@ -357,33 +372,33 @@
 
                         <Label Content="Voltage" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
                         <Slider Style="{StaticResource styleSliderVoltage}" Grid.Column="1" Grid.Row="0" Maximum="7.0"
-                                Value="{Binding speedController.voltage}"/>
+                                Value="{Binding Datas.SpeedController.voltage}"/>
                         <TextBox Style="{StaticResource styleTextBoxVoltage}" Grid.Column="2" Grid.Row="0"
-                                 Text="{Binding speedController.voltage, StringFormat=N4}"/>
+                                 Text="{Binding Datas.SpeedController.voltage, StringFormat=N4}"/>
 
                         <Label Content="Set Point" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="1"/>
                         <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="1" Maximum="7.0"
-                                Value="{Binding speedController.setPoint}"/>
+                                Value="{Binding Datas.SpeedController.setPoint}"/>
                         <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="1"
-                                 Text="{Binding speedController.setPoint, StringFormat=N4}"/>
+                                 Text="{Binding Datas.SpeedController.setPoint, StringFormat=N4}"/>
 
                         <Label Content="Kp" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="2"/>
                         <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="2" Maximum="7.0"
-                                Value="{Binding speedController.Kp}"/>
+                                Value="{Binding Datas.SpeedController.Kp}"/>
                         <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="2"
-                                 Text="{Binding speedController.Kp, StringFormat=N4}"/>
+                                 Text="{Binding Datas.SpeedController.Kp, StringFormat=N4}"/>
 
                         <Label Content="Ki" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="3"/>
                         <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="3" Maximum="7.0"
-                                Value="{Binding speedController.Ki}"/>
+                                Value="{Binding Datas.SpeedController.Ki}"/>
                         <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="3"
-                                 Text="{Binding speedController.Ki, StringFormat=N4}"/>
+                                 Text="{Binding Datas.SpeedController.Ki, StringFormat=N4}"/>
 
                         <Label Content="Kd" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="4"/>
                         <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="4" Maximum="7.0"
-                                Value="{Binding speedController.Kd}"/>
+                                Value="{Binding Datas.SpeedController.Kd}"/>
                         <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="4"
-                                 Text="{Binding speedController.Kd, StringFormat=N4}"/>
+                                 Text="{Binding Datas.SpeedController.Kd, StringFormat=N4}"/>
 
 
                     </Grid>
@@ -400,9 +415,9 @@
 
                         <Label Content="Beta" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
                         <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="0" Maximum="7.0"
-                                Value="{Binding speedController.filterBeta}"/>
+                                Value="{Binding Datas.SpeedController.filterBeta}"/>
                         <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="0"
-                                 Text="{Binding speedController.filterBeta, StringFormat=N4}"/>
+                                 Text="{Binding Datas.SpeedController.filterBeta, StringFormat=N4}"/>
                     </Grid>
                 </GroupBox>
 
@@ -417,9 +432,9 @@
 
                         <Label Content="Beta" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
                         <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="0" Maximum="7.0"
-                                Value="{Binding angleController.filterBeta}"/>
+                                Value="{Binding Datas.AngleController.filterBeta}"/>
                         <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="0"
-                                 Text="{Binding angleController.filterBeta, StringFormat=N4}"/>
+                                 Text="{Binding Datas.AngleController.filterBeta, StringFormat=N4}"/>
                     </Grid>
                 </GroupBox>
             </StackPanel>

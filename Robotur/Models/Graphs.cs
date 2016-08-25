@@ -46,7 +46,8 @@ namespace Robotur
 
         public void draw(List<Measurements> listOfMeasurements)
         {
-            for(int i=0; i<listOfMeasurements.Count; i++)
+            series.Clear();
+            for (int i=0; i<listOfMeasurements.Count; i++)
             {
                 var m = listOfMeasurements[i];
                 series.Add(new LineSeries());
@@ -60,10 +61,12 @@ namespace Robotur
                 }
             }
 
-            plotModel.InvalidatePlot(true);
-
+            plotModel.Series.Clear();
+            
             foreach (LineSeries points in series)
                 plotModel.Series.Add(points);
+
+            plotModel.InvalidatePlot(true);
         }
     }
 }
