@@ -8,20 +8,19 @@ using System.Windows.Data;
 
 namespace Robotur
 {
-    class SelectedIndexBoolConverter : IMultiValueConverter
+    public class SelectedIndexBoolConverter : IValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int index1 = (int)values[0];
-            int index2 = (int)values[1];
+            var val = (int)value;
 
-            if (index1 == -1 || index2 == -1)
+            if (val == -1)
                 return false;
             else
                 return true;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;
         }

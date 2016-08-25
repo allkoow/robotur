@@ -93,11 +93,13 @@
     <Compile Include="Converters\StringBuilderToStringConverter.cs" />
     <Compile Include="Models\AngleController.cs" />
     <Compile Include="Models\BatteryInfo.cs" />
+    <Compile Include="Models\Datas.cs" />
     <Compile Include="Models\Graphs.cs" />
     <Compile Include="Models\Measurements.cs" />
     <Compile Include="Models\PIDparameters.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\SpeedControls.cs" />
+    <Compile Include="Models\Connection.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

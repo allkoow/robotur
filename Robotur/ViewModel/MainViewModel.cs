@@ -8,6 +8,8 @@ using OxyPlot;
 using System.Collections.Generic;
 using OxyPlot.Series;
 using OxyPlot.Axes;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
 
 namespace Robotur.ViewModel
 {
@@ -20,14 +22,14 @@ namespace Robotur.ViewModel
             set { _settings = value; }
         }
 
-        private StringBuilder _messages = new StringBuilder();
-        public StringBuilder messages
+        private StringBuilder messages = new StringBuilder();
+        public StringBuilder Messages
         {
-            get { return _messages; }
+            get { return messages; }
             set
             {
-                _messages = value;
-                RaisePropertyChanged(nameof(messages));
+                if (messages != value) messages = value;
+                RaisePropertyChanged(nameof(Messages));
             }
         }
 
@@ -64,22 +66,21 @@ namespace Robotur.ViewModel
             }
         }
 
-        // Measurements containing
-        private ObservableCollection<Measurements> _measurements = new ObservableCollection<Measurements>();
-        public ObservableCollection<Measurements> measurements
+        private Connection connection;
+        public Connection Connection
         {
-            get { return _measurements; }
-            set { _measurements = value; }
+            get { return connection; }
+            set { connection = value; }
         }
 
-        Measurements points1 = new Measurements();
-        Measurements points2 = new Measurements();
+        private Timer timerMessages;
 
-        public Graphs graphs
-        {
-            get;
-            private set;
-        }
+        #region Commands
+        public ICommand CommandConnection { get; private set; }
+        public ICommand CommandDisconnection { get; private set; }
+        public ICommand CommandRefreshListOfPorts { get; private set; }
+        public ICommand CommandSendDatas { get; private set; }
+        #endregion
 
         // Timer for refreshing graphs
         private static Timer timerGraphs = null;
@@ -93,24 +94,26 @@ namespace Robotur.ViewModel
             timerGraphs = new Timer(1000);
             timerGraphs.Elapsed += graphUpdate;
 
-            double value = 0.0;
+            timerMessages = new Timer(100);
+            timerMessages.Elapsed += messagesUpdate;
+            timerMessages.Start();
 
-            for (int i=0; i<10; i++)
-            {
-                points1.X.Add(value + i);
-                points1.Y.Add(value + i + 1);
+            connection = new Connection(messages);
 
-                points2.X.Add(value + i);
-                points2.Y.Add(value + i + 3);
-            }
+            CommandConnection = new RelayCommand(connection.Connect);
+            CommandDisconnection = new RelayCommand(connection.Disconnect);
+            CommandRefreshListOfPorts = new RelayCommand(connection.RefreshListOfPorts);
+            CommandSendDatas = new RelayCommand(SendDatas);
+        }
 
-            List<Measurements> points = new List<Measurements>();
-            points.Add(points1);
-            points.Add(points2);
+        private void SendDatas()
+        {
+            throw new NotImplementedException();
+        }
 
-            graphs = new Graphs();
-
-            graphs.draw(points);
+        private void messagesUpdate(object sender, ElapsedEventArgs e)
+        {
+            RaisePropertyChanged(nameof(messages));
         }
 
         private void graphUpdate(object sender, ElapsedEventArgs e)

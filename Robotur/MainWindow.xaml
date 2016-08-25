@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:Robotur"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="Robotur Interface" Height="730" Width="1280"
+        Title="Robotur Interface" Height="740" Width="1280"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Window.Resources>
@@ -175,63 +177,88 @@
                                     <Label Content="Baud Rate" Style="{StaticResource styleLabel1}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Vertical" >
-                                    <ComboBox Name="cmbBoxPortNumber" Style="{StaticResource styleCB1}" ItemsSource="{Binding settings.portNumbers}" />
-                                    <ComboBox Name="cmbBoxBaudRate" Style="{StaticResource styleCB1}" ItemsSource="{Binding settings.baudRates}"/>
+                                    <ComboBox Name="cmbBoxPortNumber" Style="{StaticResource styleCB1}" 
+                                              ItemsSource="{Binding Connection.PortNumbers}"
+                                              SelectedIndex="{Binding Connection.SelectedPortIndex }"/>
+                                    <ComboBox Name="cmbBoxBaudRate" Style="{StaticResource styleCB1}" 
+                                              ItemsSource="{Binding Connection.BaudRates}"
+                                              SelectedIndex="{Binding Connection.SelectedBaudRateIndex }"/>
                                 </StackPanel>
                             </DockPanel>
 
-                            <Button Name="btnRefreshPorts" Content="Refresh List of Ports" Command="{Binding refreshPortsCommand}" Style="{StaticResource styleBTN2}"/>
+                            <Button Name="btnRefreshPorts" Content="Refresh List of Ports" 
+                                    Command="{Binding CommandRefreshListOfPorts}" Style="{StaticResource styleBTN2}"/>
 
-                            <ToggleButton Name="btnConnect" Command="{Binding connectCommand}">
+                            <ToggleButton Name="btnConnect">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Checked">
+                                        <i:InvokeCommandAction Command="{Binding CommandConnection}" />
+                                    </i:EventTrigger>
+                                    <i:EventTrigger EventName="Unchecked">
+                                        <i:InvokeCommandAction Command="{Binding CommandDisconnection}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <ToggleButton.Style>
                                     <Style TargetType="ToggleButton" BasedOn="{StaticResource styleBTN1}">
                                         <Setter Property="Content" Value="Connect" />
+                                        <Setter Property="IsEnabled" Value="False" />
                                         <Style.Triggers>
-                                            <Trigger Property="IsChecked" Value="True">
-                                                <Setter Property="Content" Value="Disconnect" />
-                                            </Trigger>
-                                            <DataTrigger Value="False">
+                                            <DataTrigger Binding="{Binding Connection.Connecting}" Value="True">
+                                                <Setter Property="Content" Value="Connecting..." />
                                                 <Setter Property="IsEnabled" Value="False" />
-                                                <DataTrigger.Binding>
-                                                    <MultiBinding Converter="{StaticResource selectedIndexBoolConverter}">
-                                                        <Binding ElementName="cmbBoxPortNumber" Path="SelectedIndex" />
-                                                        <Binding ElementName="cmbBoxBaudRate" Path="SelectedIndex" />
-                                                    </MultiBinding>
-                                                </DataTrigger.Binding>
                                             </DataTrigger>
+                                            <DataTrigger Binding="{Binding Connection.IsOpen}" Value="True">
+                                                <Setter Property="Content" Value="Disconnect" />
+                                            </DataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition 
+                                                        Binding="{Binding ElementName=cmbBoxPortNumber, 
+                                                        Path=SelectedIndex, Converter={StaticResource selectedIndexBoolConverter}}" Value="True" />
+                                                    <Condition Binding="{Binding ElementName=cmbBoxBaudRate, 
+                                                        Path=SelectedIndex, Converter={StaticResource selectedIndexBoolConverter}}" Value="True" />
+                                                    <Condition Binding="{Binding Connection.Connecting}" Value="False" />
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.Setters>
+                                                    <Setter Property="IsEnabled" Value="True" />
+                                                </MultiDataTrigger.Setters>
+                                            </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </ToggleButton.Style>
                             </ToggleButton>
-
+      
                             <TextBox Name="txtBoxMessages" 
-                                     Text="{Binding Path=messages, Converter={StaticResource stringBuilderToStringConverter}}" Height="100" Margin="5" Padding="5"/>
+                                     Text="{Binding Path=Messages, Converter={StaticResource stringBuilderToStringConverter}}" 
+                                     Height="100" Margin="5" Padding="5"
+                                     VerticalScrollBarVisibility="Auto"/>
                         </StackPanel>
                     </GroupBox>
 
                     <GroupBox Name="groupBoxOperatingMode" Header="Operating Mode" Style="{StaticResource styleGB1}">
                         <StackPanel>
                             <RadioButton Name="rbtnOff" Margin="5" 
-                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=off}">Off</RadioButton>
+                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=off}">Off</RadioButton>
                             <RadioButton Name="rbtnVoltage" Margin="5"
-                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=voltage}">Voltage to motors</RadioButton>
+                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=voltage}">Voltage to motors</RadioButton>
                             <RadioButton Name="rbtnVelocity" Margin="5"
-                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=velocityController}">Angular Velocity Controller</RadioButton>
+                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=velocityController}">Angular Velocity Controller</RadioButton>
                             <RadioButton Name="rbtnAngle" Margin="5"
-                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=angleController}">Angle controller</RadioButton>
+                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=angleController}">Angle controller</RadioButton>
                             <RadioButton Name="rbtnCascade" Margin="5"
-                                         IsChecked="{Binding Path=settings.operatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=cascadeController}" IsEnabled="False">Cascade controller</RadioButton>
+                                         IsChecked="{Binding Path=Connection.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=cascadeController}" IsEnabled="False">Cascade controller</RadioButton>
                         </StackPanel>
                     </GroupBox>
 
                     <GroupBox Name="groupBoxGraphsSettings" Header="Graphs" Style="{StaticResource styleGB1}">
                         <StackPanel>
-                            <CheckBox Name="checkBoxDatas" Content="Get Datas" Margin="5" IsChecked="{Binding Path=settings.getDatas}"/>
+                            <CheckBox Name="checkBoxDatas" Content="Get Datas" Margin="5" 
+                                      IsChecked="{Binding Path=Connection.Settings.GetDatas}"/>
                             <DockPanel >
                                 <Label Content="No. of samples" Style="{StaticResource styleLabel1}" />
                                 <Slider Grid.Column="1" Name="sliderSamples"
                                     Minimum="0" Maximum="1000" Ticks="1"
-                                    Value="{Binding Path=settings.numberOfSamples}" HorizontalAlignment="Stretch">
+                                    Value="{Binding Path=Connection.Settings.NumberOfSamples}" HorizontalAlignment="Stretch">
                                     <Slider.Style>
                                         <Style TargetType="Slider" BasedOn="{StaticResource styleSlider1}">
                                             <Setter Property="IsEnabled" Value="False" />

@@ -15,58 +15,36 @@ namespace Robotur
 
     public class Settings : INotifyPropertyChanged
     {
-        private ObservableCollection<string> _portNumbers = new ObservableCollection<string>();
-        public ObservableCollection<string> portNumbers
+        private OperatingMode operatingMode;
+        public OperatingMode OperatingMode
         {
-            get { return _portNumbers; }
+            get { return operatingMode; }
             set
             {
-                _portNumbers = value;
-                RaisePropertyChanged(nameof(portNumbers));
+                operatingMode = value;
+                RaisePropertyChanged(nameof(OperatingMode));
             }
         }
 
-        private ObservableCollection<int> _baudRates = new ObservableCollection<int>();
-        public ObservableCollection<int> baudRates
+        private bool getDatas;
+        public bool GetDatas
         {
-            get { return _baudRates; }
+            get { return getDatas; }
             set
             {
-                _baudRates = value;
-                RaisePropertyChanged(nameof(baudRates));
+                getDatas = value;
+                RaisePropertyChanged(nameof(GetDatas));
             }
         }
 
-        private OperatingMode _operatingMode;
-        public OperatingMode operatingMode
+        private int numberOfSamples;
+        public int NumberOfSamples
         {
-            get { return _operatingMode; }
+            get { return numberOfSamples; }
             set
             {
-                _operatingMode = value;
-                RaisePropertyChanged(nameof(operatingMode));
-            }
-        }
-
-        private bool _getDatas;
-        public bool getDatas
-        {
-            get { return _getDatas; }
-            set
-            {
-                _getDatas = value;
-                RaisePropertyChanged(nameof(getDatas));
-            }
-        }
-
-        private int _numberOfSamples;
-        public int numberOfSamples
-        {
-            get { return _numberOfSamples; }
-            set
-            {
-                _numberOfSamples = value;
-                RaisePropertyChanged(nameof(numberOfSamples));
+                numberOfSamples = value;
+                RaisePropertyChanged(nameof(NumberOfSamples));
             }
         }
 
