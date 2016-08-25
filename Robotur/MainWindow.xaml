@@ -252,8 +252,19 @@
 
                     <GroupBox Name="groupBoxGraphsSettings" Header="Graphs" Style="{StaticResource styleGB1}">
                         <StackPanel>
-                            <CheckBox Name="checkBoxDatas" Content="Get Datas" Margin="5" 
-                                      IsChecked="{Binding Path=Datas.Settings.GetDatas}"/>
+                            <CheckBox Name="checkBoxDatas" Content="Get Datas" Margin="5" >
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="IsChecked" Value="{Binding Path=Datas.Settings.GetDatas}" />
+                                        <Setter Property="IsEnabled" Value="False" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Connection.IsOpen}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
                             <DockPanel >
                                 <Label Content="No. of samples" Style="{StaticResource styleLabel1}" />
                                 <Slider Grid.Column="1" Name="sliderSamples"

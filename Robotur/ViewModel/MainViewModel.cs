@@ -88,10 +88,22 @@ namespace Robotur.ViewModel
             GraphVelocity = new Graphs();
             GraphVoltage = new Graphs();
 
-            CommandConnection = new RelayCommand(Connection.Connect);
-            CommandDisconnection = new RelayCommand(Connection.Disconnect);
+            CommandConnection = new RelayCommand(Connect);
+            CommandDisconnection = new RelayCommand(Disconnect);
             CommandRefreshListOfPorts = new RelayCommand(Connection.RefreshListOfPorts);
             CommandSendDatas = new RelayCommand(SendDatas);
+        }
+
+        private void Connect()
+        {
+            Connection.Connect();
+            timerGraphs.Start();
+        }
+        private void Disconnect()
+        {
+            Connection.Disconnect();
+            timerGraphs.Stop();
+            Datas.Settings.GetDatas = false;
         }
 
         private void SendDatas()

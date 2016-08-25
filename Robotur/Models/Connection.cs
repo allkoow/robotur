@@ -202,7 +202,6 @@ namespace Robotur
                     messages.AppendLine("Zamknięto połączenie.");
                     IsOpen = false;
                     timerCheckIsOpen.Stop();
-
                 }
                 catch
                 {
