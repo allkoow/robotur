@@ -265,25 +265,9 @@
             </GroupBox>
         </StackPanel>
         <GroupBox Grid.Column="1" Header="Graphs" Style="{StaticResource styleGB2}" >
-            <StackPanel>
-                <oxy:Plot>
-                    <oxy:Plot.Series>
-                        <oxy:LineSeries Name="graphOmega" ItemsSource="{Binding measurements[0]}" />
-                        <oxy:LineSeries Name="graphOmegaRef" ItemsSource="{Binding measurements[1]}" />
-                    </oxy:Plot.Series>
-                </oxy:Plot>
-                <oxy:Plot>
-                    <oxy:Plot.Series>
-                        <oxy:LineSeries Name="graphAngle" ItemsSource="{Binding measurements[2]}" />
-                        <oxy:LineSeries Name="graphAngleRef" ItemsSource="{Binding measurements[3]}" />
-                    </oxy:Plot.Series>
-                </oxy:Plot>
-                <oxy:Plot>
-                    <oxy:Plot.Series>
-                        <oxy:LineSeries Name="graphVoltage" ItemsSource="{Binding measurements[4]}" />
-                    </oxy:Plot.Series>
-                </oxy:Plot>
-            </StackPanel>
+            <Grid>
+                <oxy:PlotView Model="{Binding graphs.PlotModel}" />
+            </Grid>
         </GroupBox>
         <GroupBox Grid.Column="2" Header="Parameters" Style="{StaticResource styleGB2}">
             <StackPanel>
