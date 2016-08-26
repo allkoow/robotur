@@ -89,29 +89,13 @@ namespace Robotur
                 #region przypisanie danych 
                 for (i = 0; i < datasDouble.Length; i++)
                 {
-                    if (i != 2)
-                    {
-                        Measurements[i].X.Add(Measurements[i].X[Measurements[i].X.Count - 1] + 1.0);
-                        Measurements[i].Y.Add(datasDouble[i]);
-                    }
+                    Measurements[i].X.Add(Measurements[i].X[Measurements[i].X.Count - 1] + 1.0);
+                    Measurements[i].Y.Add(datasDouble[i]);
                 }
 
-                if (settings.OperatingMode == OperatingMode.cascadeController)
-                {
-                    Measurements[2].X.Add(Measurements[2].X[Measurements[2].X.Count - 1] + 1.0);
-                    Measurements[2].Y.Add(datasDouble[2]);
-                }
-                else
-                {
-                    Measurements[2].X.Add(Measurements[2].X[Measurements[2].X.Count - 1] + 1.0);
-                    Measurements[2].Y.Add(angleController.setPoint);
-                }
-
-                Measurements[6].X.Add(Measurements[6].X[Measurements[6].X.Count - 1] + 1.0);
-                Measurements[6].Y.Add(speedController.setPoint);
-
-                batteryInfo.cell1 = Measurements[4].Y[0];
-                batteryInfo.cell2 = Measurements[5].Y[0];
+                batteryInfo.Cell1 = Measurements[5].Y[0];
+                batteryInfo.Cell2 = Measurements[6].Y[0];
+                
                 #endregion
                 #region obcinanie zbyt dużej ilości danych
                 foreach (Measurements m in Measurements)
@@ -128,21 +112,22 @@ namespace Robotur
 
         private string PrepareDatasToSend()
         {
-            string frame = Convert.ToString((int)settings.OperatingMode - 1) + ";"
+            string frame = Convert.ToString((int)settings.OperatingMode) + ";"
                          + Convert.ToString(0) + ";"
-                         + string.Format("{0:N4}", speedController.voltage) + ";"
-                         + string.Format("{0:N4}", angleController.setPoint) + ";"
+                         + Convert.ToString(speedController.SignalPWM) + ";"
+                         + string.Format("{0:N4}", angleController.SetPoint) + ";"
                          + string.Format("{0:N4}", angleController.Kp) + ";"
                          + string.Format("{0:N4}", angleController.Ki) + ";"
                          + string.Format("{0:N4}", angleController.Kd) + ";"
-                         + string.Format("{0:N4}", speedController.setPoint) + ";"
+                         + string.Format("{0:N4}", speedController.SetPoint) + ";"
                          + string.Format("{0:N4}", speedController.Kp) + ";"
                          + string.Format("{0:N4}", speedController.Ki) + ";"
-                         + string.Format("{0:N4}", speedController.filterBeta) + ";"
-                         + string.Format("{0:N4}", angleController.filterBeta) + ";"
+                         + string.Format("{0:N4}", speedController.FilterBeta) + ";"
+                         + string.Format("{0:N4}", angleController.FilterBeta) + ";"
                          + Convert.ToString(0) + ";"
                          + Convert.ToString(0);
-   
+
+            frame = frame.Replace(",", ".");
             return frame;
         }
     }

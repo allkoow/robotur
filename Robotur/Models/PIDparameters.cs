@@ -5,14 +5,14 @@ namespace Robotur
     public class PIDparameters : INotifyPropertyChanged
     {
 
-        private double _setPoint;
-        public double setPoint
+        private double setPoint;
+        public double SetPoint
         {
-            get { return _setPoint; }
+            get { return setPoint; }
             set
             {
-                _setPoint = value;
-                RaisePropertyChanged(nameof(setPoint));
+                setPoint = value;
+                RaisePropertyChanged(nameof(SetPoint));
             }
         }
 

@@ -10,7 +10,7 @@ namespace Robotur
 {
     public enum OperatingMode
     {
-        off, voltage, velocityController, angleController, cascadeController
+        off, pwm, velocityController, angleController, cascadeController
     }
 
     public class Settings : INotifyPropertyChanged

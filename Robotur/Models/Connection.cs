@@ -14,7 +14,6 @@ namespace Robotur
     {
         private SerialPort serialPort = new SerialPort();
         private BackgroundWorker bcgWorker = new BackgroundWorker();
-        private static Timer timer;
         private static Timer timerCheckIsOpen;
 
         public StringBuilder messages
@@ -102,9 +101,6 @@ namespace Robotur
             this.messages = messages;
             RefreshListOfPorts();
 
-            timer = new Timer(5000);
-            timer.Elapsed += tooLong;
-
             timerCheckIsOpen = new Timer(1000);
             timerCheckIsOpen.Elapsed += checkIsOpen;
 
@@ -124,8 +120,6 @@ namespace Robotur
 
             foreach (string port in ports)
                 PortNumbers.Add(port);
-
-            messages.AppendLine("Odświeżono listę portów.");
         }
 
         public void Connect()
@@ -134,7 +128,6 @@ namespace Robotur
             Connecting = true;
 
             bcgWorker.RunWorkerAsync();
-            timer.Start();
         }
 
         private void DoConnection(object sender, DoWorkEventArgs e)
@@ -147,7 +140,6 @@ namespace Robotur
                 if(!serialPort.IsOpen)
                 {
                     serialPort.Open();
-                    timer.Stop();
                 }
                 else
                 {
@@ -182,14 +174,6 @@ namespace Robotur
                 messages.AppendLine("Utracono połączenie.");
                 timerCheckIsOpen.Stop();
             }
-        }
-
-        private void tooLong(object sender, ElapsedEventArgs e)
-        {
-            messages.AppendLine("Nawiązywanie połączenia trwa dłużej niż zwykle. Spróbuj ponownie." + Environment.NewLine);
-
-            bcgWorker.CancelAsync();
-            timer.Stop();
         }
 
         public void Disconnect()

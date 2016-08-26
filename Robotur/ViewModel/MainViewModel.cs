@@ -48,7 +48,7 @@ namespace Robotur.ViewModel
             get;
             set;
         }
-        public Graphs GraphVoltage
+        public Graphs GraphPWM
         {
             get;
             set;
@@ -86,7 +86,7 @@ namespace Robotur.ViewModel
 
             GraphAngle = new Graphs("Angle");
             GraphVelocity = new Graphs("Velocity");
-            GraphVoltage = new Graphs("Voltage");
+            GraphPWM = new Graphs("PWM signal");
 
             CommandConnection = new RelayCommand(Connect);
             CommandDisconnection = new RelayCommand(Disconnect);
@@ -122,9 +122,9 @@ namespace Robotur.ViewModel
             if (Datas.Settings.GetDatas)
             {
                 Datas.DatasConversion(Connection.SerialDatas);
-                GraphAngle.draw(new List<Measurements>() { Datas.Measurements[1], Datas.Measurements[2] });
-                GraphVelocity.draw(new List<Measurements>() { Datas.Measurements[0], Datas.Measurements[6] });
-                GraphVoltage.draw(new List<Measurements>() { Datas.Measurements[3] });
+                GraphAngle.draw(new List<Measurements>() { Datas.Measurements[0], Datas.Measurements[1] });
+                GraphVelocity.draw(new List<Measurements>() { Datas.Measurements[2], Datas.Measurements[3] });
+                GraphPWM.draw(new List<Measurements>() { Datas.Measurements[4] });
             }  
         }
     }

@@ -8,14 +8,14 @@ namespace Robotur
 {
     public class AngleController : PIDparameters
     {
-        private double _filterBeta;
-        public double filterBeta
+        private double filterBeta;
+        public double FilterBeta
         {
-            get { return _filterBeta; }
+            get { return filterBeta; }
             set
             {
-                _filterBeta = value;
-                RaisePropertyChanged(nameof(filterBeta));
+                filterBeta = value;
+                RaisePropertyChanged(nameof(FilterBeta));
             }
         }
     }

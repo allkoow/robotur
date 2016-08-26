@@ -69,9 +69,6 @@ namespace Robotur
                 }
             }
 
-            series[0].Title = "lala";
-            
-
             plotModel.Series.Clear();
             
             foreach (LineSeries points in series)

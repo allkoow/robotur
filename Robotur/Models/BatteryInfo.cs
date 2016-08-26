@@ -11,38 +11,39 @@ namespace Robotur
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private double _cell1;
-        public double cell1
+        private double cell1;
+        public double Cell1
         {
-            get { return _cell1; }
+            get { return cell1; }
             set
             {
-                _cell1 = value;
-                RaisePropertyChanged(nameof(cell1));
+                cell1 = value;
+                RaisePropertyChanged(nameof(Cell1));
             }
         }
 
-        private double _cell2;
-        public double cell2
+        private double cell2;
+        public double Cell2
         {
-            get { return _cell2; }
+            get { return cell2; }
             set
             {
-                _cell2 = value;
-                RaisePropertyChanged(nameof(cell2));
+                cell2 = value;
+                RaisePropertyChanged(nameof(Cell2));
             }
         }
 
-        private double _battery;
-        public double battery
+        private double battery;
+        public double Battery
         {
             get
             {
-                return _cell1 + _cell2;
+                return cell1 + cell2;
             }
             set
             {
-                battery = _cell1 + _cell2;
+                battery = cell1 + cell2;
+                RaisePropertyChanged(nameof(Battery));
             }
         }
 

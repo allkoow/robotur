@@ -8,25 +8,25 @@ namespace Robotur
 {
     public class SpeedController : PIDparameters
     {
-        private double _voltage;
-        public double voltage
+        private int signalPWM;
+        public int SignalPWM
         {
-            get { return _voltage; }
+            get { return signalPWM; }
             set
             {
-                _voltage = value;
-                RaisePropertyChanged(nameof(voltage));
+                signalPWM = value;
+                RaisePropertyChanged(nameof(SignalPWM));
             }
         }
 
-        private double _filterBeta;
-        public double filterBeta
+        private double filterBeta;
+        public double FilterBeta
         {
-            get { return _filterBeta; }
+            get { return filterBeta; }
             set
             {
-                _filterBeta = value;
-                RaisePropertyChanged(nameof(filterBeta));
+                filterBeta = value;
+                RaisePropertyChanged(nameof(FilterBeta));
             }
         }
 
