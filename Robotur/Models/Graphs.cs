@@ -26,22 +26,30 @@ namespace Robotur
         // Parameters
         private List<LineSeries> series = new List<LineSeries>();
 
-        public Graphs()
+        public Graphs(string title)
         {
             // Definitions of axes
             var xaxis = new LinearAxis
             {
-                Position = AxisPosition.Bottom
+                Position = AxisPosition.Bottom,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot
             };
 
             var yaxis = new LinearAxis
             {
-                Position = AxisPosition.Left
+                Position = AxisPosition.Left,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot
             };
 
             // Add axes to the plot model
             plotModel.Axes.Add(xaxis);
             plotModel.Axes.Add(yaxis);
+
+            plotModel.Title = title;
+            plotModel.TitleFontSize = 16;
+            plotModel.IsLegendVisible = true;
         }
 
         public void draw(List<Measurements> listOfMeasurements)
@@ -60,6 +68,9 @@ namespace Robotur
                     series[i].Points.Add(new DataPoint(x, y));
                 }
             }
+
+            series[0].Title = "lala";
+            
 
             plotModel.Series.Clear();
             

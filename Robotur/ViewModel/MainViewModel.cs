@@ -84,9 +84,9 @@ namespace Robotur.ViewModel
             Connection = new Connection(messages);
             Datas = new Datas();
 
-            GraphAngle = new Graphs();
-            GraphVelocity = new Graphs();
-            GraphVoltage = new Graphs();
+            GraphAngle = new Graphs("Angle");
+            GraphVelocity = new Graphs("Velocity");
+            GraphVoltage = new Graphs("Voltage");
 
             CommandConnection = new RelayCommand(Connect);
             CommandDisconnection = new RelayCommand(Disconnect);
