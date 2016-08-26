@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:Robotur"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
+        Icon="rob.ico"
         Title="Robotur Interface" Height="850" Width="1280"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
