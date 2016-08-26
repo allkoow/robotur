@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:Robotur"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="Robotur Interface" Height="740" Width="1280"
+        Title="Robotur Interface" Height="850" Width="1280"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
 
     <Window.Resources>
@@ -17,7 +17,8 @@
         <local:StringBuilderToStringConverter x:Key="stringBuilderToStringConverter" />
                 
         <Style TargetType="GroupBox" x:Key="styleGB1">
-            <Setter Property="Padding" Value="5 2 2 0" />
+            <Setter Property="Padding" Value="2 2 2 2" />
+            <Setter Property="Margin" Value="2" />
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
@@ -166,6 +167,10 @@
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
         <StackPanel Grid.Column="0">
             <GroupBox Name="groupBoxSettings" Header="Settings" Style="{StaticResource styleGB2}">
                 <StackPanel>
@@ -229,11 +234,6 @@
                                     </Style>
                                 </ToggleButton.Style>
                             </ToggleButton>
-      
-                            <TextBox Name="txtBoxMessages" 
-                                     Text="{Binding Path=Messages, Converter={StaticResource stringBuilderToStringConverter}}" 
-                                     Height="100" Margin="5" Padding="5"
-                                     VerticalScrollBarVisibility="Auto"/>
                         </StackPanel>
                     </GroupBox>
 
@@ -457,5 +457,9 @@
                 </GroupBox>
             </StackPanel>
         </GroupBox>
+        <TextBox Name="txtBoxMessages" Grid.Row="1" Grid.ColumnSpan="3"
+                Text="{Binding Path=Messages, Converter={StaticResource stringBuilderToStringConverter}}" 
+                Margin="5" Padding="5"
+                VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>
