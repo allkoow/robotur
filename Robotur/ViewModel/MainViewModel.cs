@@ -15,14 +15,14 @@ namespace Robotur.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private StringBuilder messages = new StringBuilder();
-        public StringBuilder Messages
+        private StringBuilder logs = new StringBuilder();
+        public StringBuilder Logs
         {
-            get { return messages; }
+            get { return logs; }
             set
             {
-                if (messages != value) messages = value;
-                RaisePropertyChanged(nameof(Messages));
+                if (logs != value) logs = value;
+                RaisePropertyChanged(nameof(Logs));
             }
         }
 
@@ -78,10 +78,10 @@ namespace Robotur.ViewModel
             timerGraphs.Start();
 
             timerMessages = new Timer(100);
-            timerMessages.Elapsed += messagesUpdate;
+            timerMessages.Elapsed += LogsUpdate;
             timerMessages.Start();
 
-            Connection = new Connection(messages);
+            Connection = new Connection(logs);
             Datas = new Datas();
 
             GraphAngle = new Graphs("Angle");
@@ -111,9 +111,9 @@ namespace Robotur.ViewModel
             Connection.SendDatas(Datas.DatasToSend);
         }
 
-        private void messagesUpdate(object sender, ElapsedEventArgs e)
+        private void LogsUpdate(object sender, ElapsedEventArgs e)
         {
-            RaisePropertyChanged(nameof(messages));
+            RaisePropertyChanged(nameof(Logs));
         }
 
         private void graphUpdate(object sender, ElapsedEventArgs e)

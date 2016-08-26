@@ -458,7 +458,7 @@
             </StackPanel>
         </GroupBox>
         <TextBox Name="txtBoxMessages" Grid.Row="1" Grid.ColumnSpan="3"
-                Text="{Binding Path=Messages, Converter={StaticResource stringBuilderToStringConverter}}" 
+                Text="{Binding Path=Logs, Converter={StaticResource stringBuilderToStringConverter}}" 
                 Margin="5" Padding="5"
                 VerticalScrollBarVisibility="Auto"/>
     </Grid>
