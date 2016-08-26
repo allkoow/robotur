@@ -67,7 +67,11 @@ namespace Robotur.ViewModel
         // Timer for refreshing graphs
         private static Timer timerGraphs = null;
 
-        // Graphs
+        public bool IsLogsChanged
+        {
+            get;
+            set;
+        }
         
 
         public MainViewModel()
@@ -114,6 +118,7 @@ namespace Robotur.ViewModel
         private void LogsUpdate(object sender, ElapsedEventArgs e)
         {
             RaisePropertyChanged(nameof(Logs));
+            IsLogsChanged = true;
         }
 
         private void graphUpdate(object sender, ElapsedEventArgs e)

@@ -97,6 +97,7 @@
     <Compile Include="Models\Graphs.cs" />
     <Compile Include="Models\Measurements.cs" />
     <Compile Include="Models\PIDparameters.cs" />
+    <Compile Include="Models\Scroller.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\SpeedControls.cs" />
     <Compile Include="Models\Connection.cs" />
