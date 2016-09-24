@@ -38,7 +38,12 @@ namespace Robotur.ViewModel
         }
 
         #region Graphs
-        public Graphs GraphAngle
+        public Graphs GraphRoll
+        {
+            get;
+            set;
+        }
+        public Graphs GraphYaw
         {
             get;
             set;
@@ -88,7 +93,8 @@ namespace Robotur.ViewModel
             Connection = new Connection(logs);
             Datas = new Datas();
 
-            GraphAngle = new Graphs("Angle");
+            GraphRoll = new Graphs("Roll");
+            GraphYaw = new Graphs("Yaw");
             GraphVelocity = new Graphs("Velocity");
             GraphPWM = new Graphs("PWM signal");
 
@@ -127,9 +133,13 @@ namespace Robotur.ViewModel
             if (Datas.Settings.GetDatas)
             {
                 Datas.DatasConversion(Connection.SerialDatas);
-                GraphAngle.draw(new List<Measurements>() { Datas.Measurements[0], Datas.Measurements[1] });
-                GraphVelocity.draw(new List<Measurements>() { Datas.Measurements[2], Datas.Measurements[3] });
-                GraphPWM.draw(new List<Measurements>() { Datas.Measurements[4] });
+                GraphRoll.Draw(new List<Measurements>() {   Datas.Measurements[0],
+                                                            Datas.Measurements[1],
+                                                            Datas.Measurements[2],
+                                                            Datas.Measurements[3]});
+                GraphYaw.Draw(new List<Measurements>() { Datas.Measurements[4] });
+                GraphVelocity.Draw(new List<Measurements>() { Datas.Measurements[5], Datas.Measurements[6] });
+                GraphPWM.Draw(new List<Measurements>() { Datas.Measurements[9] });
             }  
         }
     }

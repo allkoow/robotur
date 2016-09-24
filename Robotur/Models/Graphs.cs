@@ -52,7 +52,7 @@ namespace Robotur
             plotModel.IsLegendVisible = true;
         }
 
-        public void draw(List<Measurements> listOfMeasurements)
+        public void Draw(List<Measurements> listOfMeasurements)
         {
             series.Clear();
             for (int i=0; i<listOfMeasurements.Count; i++)

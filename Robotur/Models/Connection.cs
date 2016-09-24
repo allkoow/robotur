@@ -189,7 +189,7 @@ namespace Robotur
                 }
                 catch
                 {
-                    messages.AppendLine("Nie można zamknąć połączenia." + Environment.NewLine);
+                    messages.AppendLine("Nie można zamknąć połączenia.");
                 }
 
                 serialPort.Dispose();

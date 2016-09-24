@@ -311,14 +311,18 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <oxy:PlotView Model="{Binding GraphAngle.PlotModel}" />
+                    <oxy:PlotView Model="{Binding GraphRoll.PlotModel}" />
                 </Grid>
                 <Grid Grid.Row="1">
-                    <oxy:PlotView Model="{Binding GraphVelocity.PlotModel}" />
+                    <oxy:PlotView Model="{Binding GraphYaw.PlotModel}" />
                 </Grid>
                 <Grid Grid.Row="2">
+                    <oxy:PlotView Model="{Binding GraphVelocity.PlotModel}" />
+                </Grid>
+                <Grid Grid.Row="3">
                     <oxy:PlotView Model="{Binding GraphPWM.PlotModel}" />
                 </Grid>
             </Grid>
@@ -389,7 +393,9 @@
                         </Grid.RowDefinitions>
 
                         <Label Content="PWM" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
-                        <Slider Style="{StaticResource styleSliderVoltage}" Grid.Column="1" Grid.Row="0" Maximum="255"
+                        <Slider Style="{StaticResource styleSliderVoltage}" Grid.Column="1" Grid.Row="0"
+                                Minimum="-255"
+                                Maximum="255"
                                 TickFrequency="1"
                                 Value="{Binding Datas.SpeedController.SignalPWM}"/>
                         <TextBox Style="{StaticResource styleTextBoxVoltage}" Grid.Column="2" Grid.Row="0"
