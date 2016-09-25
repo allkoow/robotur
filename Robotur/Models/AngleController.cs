@@ -18,5 +18,10 @@ namespace Robotur
                 RaisePropertyChanged(nameof(FilterBeta));
             }
         }
+
+        public AngleController()
+        {
+            filterBeta = 0.95;
+        }
     }
 }

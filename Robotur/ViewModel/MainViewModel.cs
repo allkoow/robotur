@@ -138,8 +138,8 @@ namespace Robotur.ViewModel
                                                             Datas.Measurements[2],
                                                             Datas.Measurements[3]});
                 GraphYaw.Draw(new List<Measurements>() { Datas.Measurements[4] });
-                GraphVelocity.Draw(new List<Measurements>() { Datas.Measurements[5], Datas.Measurements[6] });
-                GraphPWM.Draw(new List<Measurements>() { Datas.Measurements[9] });
+                GraphVelocity.Draw(new List<Measurements>() { Datas.Measurements[5], Datas.Measurements[6], Datas.Measurements[7] });
+                GraphPWM.Draw(new List<Measurements>() { Datas.Measurements[10] });
             }  
         }
     }

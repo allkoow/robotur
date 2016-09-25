@@ -54,7 +54,7 @@ namespace Robotur
 
         public Datas()
         {
-            Measurements = new Measurements[7];
+            Measurements = new Measurements[13];
             for(int i=0; i<Measurements.Length; i++)
             {
                 Measurements[i] = new Measurements();
@@ -93,8 +93,8 @@ namespace Robotur
                     Measurements[i].Y.Add(datasDouble[i]);
                 }
 
-                batteryInfo.Cell1 = Measurements[10].Y[0];
-                batteryInfo.Cell2 = Measurements[11].Y[0];
+                batteryInfo.Cell1 = Measurements[11].Y[0];
+                batteryInfo.Cell2 = Measurements[12].Y[0];
                 
                 #endregion
                 #region obcinanie zbyt dużej ilości danych
@@ -118,11 +118,12 @@ namespace Robotur
                          + string.Format("{0:N4}", angleController.Kp) + ";"
                          + string.Format("{0:N4}", angleController.Ki) + ";"
                          + string.Format("{0:N4}", angleController.Kd) + ";"
-                         + string.Format("{0:N4}", speedController.FilterBeta) + ";"
+                         + string.Format("{0:N4}", angleController.FilterBeta) + ";"
                          + string.Format("{0:N4}", speedController.SetPoint) + ";"
                          + string.Format("{0:N4}", speedController.Kp) + ";"
                          + string.Format("{0:N4}", speedController.Ki) + ";"
-                         + string.Format("{0:N4}", angleController.FilterBeta);
+                         + string.Format("{0:N4}", speedController.Kd) + ";"
+                         + string.Format("{0:N4}", speedController.FilterBeta);
 
             frame = frame.Replace(",", ".");
             return frame;

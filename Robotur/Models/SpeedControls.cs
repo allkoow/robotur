@@ -19,6 +19,12 @@ namespace Robotur
             }
         }
 
+        public SpeedController()
+        {
+            FilterBeta = 0.95;
+        }
+        
+
         private double filterBeta;
         public double FilterBeta
         {

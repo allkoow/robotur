@@ -84,82 +84,11 @@
             <Setter Property="Height" Value="20" />
         </Style>
 
-        <Style TargetType="Slider" x:Key="styleSliderVoltage">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Height" Value="20" />
-            
-            <Setter Property="IsEnabled" Value="False" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=rbtnVoltage, Path=IsChecked}" Value="True">
-                    <Setter Property="IsEnabled" Value="True" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style TargetType="Slider" x:Key="styleSliderVelocityPID">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Height" Value="20" />
-            
-            <Setter Property="IsEnabled" Value="False" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=rbtnVelocity, Path=IsChecked}" Value="True">
-                    <Setter Property="IsEnabled" Value="True" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style TargetType="Slider" x:Key="styleSliderAnglePID">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Height" Value="20" />
-            
-            <Setter Property="IsEnabled" Value="False" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=rbtnAngle, Path=IsChecked}" Value="True">
-                    <Setter Property="IsEnabled" Value="True" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
         <Style TargetType="TextBox" x:Key="styleTextBox1">
             <Setter Property="Margin" Value="5" />
             <Setter Property="Height" Value="20" />
         </Style>
 
-        <Style TargetType="TextBox" x:Key="styleTextBoxVoltage">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Height" Value="20" />
-
-            <Setter Property="IsEnabled" Value="False" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=rbtnVoltage, Path=IsChecked}" Value="True">
-                    <Setter Property="IsEnabled" Value="True" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style TargetType="TextBox" x:Key="styleTextBoxVelocityPID">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Height" Value="20" />
-
-            <Setter Property="IsEnabled" Value="False" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=rbtnVelocity, Path=IsChecked}" Value="True">
-                    <Setter Property="IsEnabled" Value="True" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style TargetType="TextBox" x:Key="styleTextBoxAnglePID">
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Height" Value="20" />
-
-            <Setter Property="IsEnabled" Value="False" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ElementName=rbtnAngle, Path=IsChecked}" Value="True">
-                    <Setter Property="IsEnabled" Value="True" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
     </Window.Resources>
     
     <Grid Name="mainGrid">
@@ -249,7 +178,7 @@
                             <RadioButton Name="rbtnAngle" Margin="5"
                                          IsChecked="{Binding Path=Datas.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=angleController}">Angle controller</RadioButton>
                             <RadioButton Name="rbtnCascade" Margin="5"
-                                         IsChecked="{Binding Path=Datas.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=cascadeController}" IsEnabled="False">Cascade controller</RadioButton>
+                                         IsChecked="{Binding Path=Datas.Settings.OperatingMode, Converter={StaticResource enumBoolConverter}, ConverterParameter=cascadeController}">Cascade controller</RadioButton>
                         </StackPanel>
                     </GroupBox>
 
@@ -348,31 +277,31 @@
                         </Grid.RowDefinitions>
                         
                         <Label Content="Set Point" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
-                        <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="0" 
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="0" 
                                 Minimum="-10.0" Maximum="10.0"
                                 Value="{Binding Datas.AngleController.SetPoint}"/>
-                        <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="0"
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="0"
                                  Text="{Binding Datas.AngleController.SetPoint, StringFormat=N4}"/>
 
                         <Label Content="Kp" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="1"/>
-                        <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="1"
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="1"
                                 Value="{Binding Datas.AngleController.Kp}"
-                                Maximum="1.0"/>
-                        <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="1"
+                                Maximum="50.0"/>
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="1"
                                  Text="{Binding Datas.AngleController.Kp, StringFormat=N4}"/>
 
                         <Label Content="Ki" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="2"/>
-                        <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="2"
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="2"
                                 Value="{Binding Datas.AngleController.Ki}"
-                                Maximum="1.0"/>
-                        <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="2"
+                                Maximum="50.0"/>
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="2"
                                  Text="{Binding Datas.AngleController.Ki, StringFormat=N4}"/>
 
                         <Label Content="Kd" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="3"/>
-                        <Slider Style="{StaticResource styleSliderAnglePID}" Grid.Column="1" Grid.Row="3"
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="3"
                                 Value="{Binding Datas.AngleController.Kd}"
-                                Maximum="1.0"/>
-                        <TextBox Style="{StaticResource styleTextBoxAnglePID}" Grid.Column="2" Grid.Row="3"
+                                Maximum="50.0"/>
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="3"
                                  Text="{Binding Datas.AngleController.Kd, StringFormat=N4}"/>
                     </Grid>
                 </GroupBox>
@@ -393,44 +322,48 @@
                         </Grid.RowDefinitions>
 
                         <Label Content="PWM" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
-                        <Slider Style="{StaticResource styleSliderVoltage}" Grid.Column="1" Grid.Row="0"
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="0"
                                 Minimum="-255"
                                 Maximum="255"
                                 TickFrequency="1"
                                 Value="{Binding Datas.SpeedController.SignalPWM}"/>
-                        <TextBox Style="{StaticResource styleTextBoxVoltage}" Grid.Column="2" Grid.Row="0"
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="0"
                                  Text="{Binding Datas.SpeedController.SignalPWM}"/>
 
                         <Label Content="Set Point" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="1"/>
-                        <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="1" Maximum="320.0"
-                                Value="{Binding Datas.SpeedController.SetPoint}"/>
-                        <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="1"
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="1" 
+                                Minimum="-33.5" Maximum="33.5"
+                                Value="{Binding Datas.SpeedController.SetPoint}" Margin="0,7,10,8"/>
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="1"
                                  Text="{Binding Datas.SpeedController.SetPoint, StringFormat=N4}"/>
 
                         <Label Content="Kp" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="2"/>
-                        <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="2" Maximum="5.0"
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="2" 
+                                Minimum="-200" Maximum="200.0"
                                 Value="{Binding Datas.SpeedController.Kp}"/>
-                        <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="2"
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="2"
                                  Text="{Binding Datas.SpeedController.Kp, StringFormat=N4}"/>
 
                         <Label Content="Ki" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="3"/>
-                        <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="3" Maximum="5.0"
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="3" 
+                                Minimum="-200" Maximum="200.0"
                                 Value="{Binding Datas.SpeedController.Ki}"/>
-                        <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="3"
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="3"
                                  Text="{Binding Datas.SpeedController.Ki, StringFormat=N4}"/>
 
                         <Label Content="Kd" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="4"/>
-                        <Slider Style="{StaticResource styleSliderVelocityPID}" Grid.Column="1" Grid.Row="4" Maximum="5.0"
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="4" 
+                                Minimum="-200" Maximum="200.0"
                                 Value="{Binding Datas.SpeedController.Kd}"/>
-                        <TextBox Style="{StaticResource styleTextBoxVelocityPID}" Grid.Column="2" Grid.Row="4"
+                        <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="4"
                                  Text="{Binding Datas.SpeedController.Kd, StringFormat=N4}"/>
 
 
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Header="Velocity filter (low-pass)" Style="{StaticResource styleGB1}" 
-                          IsEnabled="{Binding ElementName=rbtnVelocity, Path=IsChecked}">
+                <GroupBox Header="Velocity filter (low-pass)" Style="{StaticResource styleGB1}">
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
@@ -439,15 +372,15 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Content="Beta" Style="{StaticResource styleLabel1}" Grid.Column="0" Grid.Row="0"/>
-                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="0" Maximum="7.0"
+                        <Slider Style="{StaticResource styleSlider1}" Grid.Column="1" Grid.Row="0" Maximum="1.0"
                                 Value="{Binding Datas.SpeedController.FilterBeta}"/>
                         <TextBox Style="{StaticResource styleTextBox1}" Grid.Column="2" Grid.Row="0"
                                  Text="{Binding Datas.SpeedController.FilterBeta, StringFormat=N4}"/>
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Header="Angle filter (complementary)" Style="{StaticResource styleGB1}" 
-                          IsEnabled="{Binding ElementName=rbtnAngle, Path=IsChecked}">
+                <GroupBox Header="Angle filter (complementary)" Style="{StaticResource styleGB1}">
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*"/>
